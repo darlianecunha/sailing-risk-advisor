@@ -11,7 +11,7 @@ This is a *practice* extension to the rule-based engine. It:
 
 The point is not to beat the rule engine (the labels come from the rules), but
 to practise a full supervised-learning pipeline on real data and to lay the
-groundwork for richer labels later (e.g. real incident logs from the vessel).
+groundwork for richer labels later (e.g. real incident logs from the bay).
 
 Run:
     python ml/train_model.py

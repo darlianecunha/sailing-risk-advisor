@@ -32,7 +32,7 @@ def run(export_json: bool = False) -> list[dict]:
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Navio escola sailing advisor (São Luís).")
+    parser = argparse.ArgumentParser(description="Sailing advisor for São Marcos Bay (São Luís).")
     parser.add_argument("--json", action="store_true", help="also print JSON output")
     args = parser.parse_args()
     run(export_json=args.json)

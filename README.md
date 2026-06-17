@@ -1,9 +1,9 @@
-# São Luís Sailing Advisor 🚢
+# São Marcos Bay Sailing Advisor ⚓
 
-A daily go/no-go decision tool for a training vessel (*navio escola*) operating
-out of São Luís, Maranhão, Brazil (Baía de São Marcos). It pulls the marine and
-weather forecast for the next seven days, scores each day against configurable
-safety thresholds, and produces a simple traffic-light recommendation:
+A daily go/no-go decision tool for navigation in São Marcos Bay (Baía de São
+Marcos), São Luís, Maranhão, Brazil. It pulls the marine and weather forecast
+for the next seven days, scores each day against configurable safety
+thresholds, and produces a simple traffic-light recommendation:
 
 | Light | Meaning |
 |-------|---------|
@@ -18,9 +18,10 @@ rather than a black box.
 ## Why this project
 
 It reframes a classic port climate-risk analysis (threat × exposure × critical
-threshold) as a forward-looking, daily operational decision for a single
-vessel. The risk logic is original; the weather data comes from the free,
-public [Open-Meteo](https://open-meteo.com/) APIs, which the tool only consumes.
+threshold) as a forward-looking, daily operational decision for one of Brazil's
+most weather-exposed bays. The risk logic is original; the weather data comes
+from the free, public [Open-Meteo](https://open-meteo.com/) APIs, which the tool
+only consumes.
 
 ## How it works
 
@@ -65,8 +66,8 @@ the deployment.
 
 All thresholds and coordinates live in `config.py`. The defaults are a
 conservative starting point loosely informed by the ANTAQ critical-threshold
-report for Brazilian ports. **They should be calibrated to the real operating
-limits of the vessel.**
+report for Brazilian ports. **They should be calibrated to the operating limits
+of the vessel in use.**
 
 ```python
 THRESHOLDS = {
@@ -85,7 +86,7 @@ weather from the Open-Meteo Archive, builds daily features, labels risky days,
 and trains a RandomForest classifier:
 
 ```bash
-pip install -r requirements.txt
+pip install -r ml/requirements.txt
 python ml/train_model.py
 ```
 
@@ -93,12 +94,12 @@ It reports accuracy and feature importance and saves the model to
 `ml/model.joblib`. In its current form the labels are derived from the rules, so
 the classifier learns to reproduce them; the value is the end-to-end ML workflow
 and the foundation it provides for richer labels later (e.g. real incident logs
-from the vessel).
+from the bay).
 
 ## Project structure
 
 ```
-sao-luis-sailing-advisor/
+sao-marcos-sailing-advisor/
 ├── main.py              # command-line entry point
 ├── config.py            # location + safety thresholds
 ├── src/
@@ -118,17 +119,16 @@ sao-luis-sailing-advisor/
 
 ## Roadmap ideas
 
-- Calibrate thresholds with the vessel's crew and real operating limits.
-- Add tide and storm-surge data for the bay.
+- Calibrate thresholds with real operating limits for the bay.
+- Add tide and storm-surge data for São Marcos Bay.
 - Replace rule-based labels with a log of real incidents to train a genuine
   predictive model.
 - Wrap the output in a Streamlit dashboard.
 
 ## Disclaimer
 
-This is a decision-support tool. It does not replace the judgement of the
-vessel's commander or official bulletins from the Brazilian Navy
-(Marinha do Brasil).
+This is a decision-support tool. It does not replace professional navigational
+judgement or official bulletins from the Brazilian Navy (Marinha do Brasil).
 
 ## Author
 

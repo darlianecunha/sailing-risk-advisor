@@ -1,8 +1,8 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 type: software
-title: "São Luís Sailing Advisor: a daily go/no-go decision tool for a training vessel"
-abstract: "A decision-support tool that scores the seven-day marine and weather forecast for São Luís (Baía de São Marcos, Brazil) against configurable safety thresholds, producing an explainable traffic-light recommendation for a training vessel."
+title: "São Marcos Bay Sailing Advisor: a daily go/no-go navigation decision tool"
+abstract: "A decision-support tool that scores the seven-day marine and weather forecast for São Marcos Bay (São Luís, Brazil) against configurable safety thresholds, producing an explainable traffic-light recommendation for navigation."
 version: "1.0.0"
 date-released: "2026-06-16"
 license: MIT

@@ -9,7 +9,7 @@ def to_console(days: list[dict]) -> str:
     """Build a readable console table of the 7-day outlook."""
     lines = []
     lines.append("=" * 64)
-    lines.append("  NAVIO ESCOLA - PREVISÃO DE NAVEGABILIDADE (São Luís/MA)")
+    lines.append("  PREVISÃO DE NAVEGABILIDADE - BAÍA DE SÃO MARCOS (São Luís/MA)")
     lines.append("=" * 64)
     for d in days:
         date = dt.date.fromisoformat(d["date"]).strftime("%d/%m (%a)")
@@ -53,7 +53,7 @@ def build_html(days: list[dict]) -> str:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Navio Escola - Navegabilidade São Luís</title>
+<title>Navegabilidade - Baía de São Marcos</title>
 <style>
   * {{ box-sizing: border-box; }}
   body {{ font-family: system-ui, sans-serif; margin: 0; background:#f5f7fa; color:#1f2937; }}
@@ -76,8 +76,8 @@ def build_html(days: list[dict]) -> str:
 </head>
 <body>
 <header>
-  <h1>Navio Escola · Previsão de navegabilidade · São Luís (MA)</h1>
-  <p>Baía de São Marcos · gerado em {generated} · fonte: Open-Meteo</p>
+  <h1>Previsão de navegabilidade · Baía de São Marcos · São Luís (MA)</h1>
+  <p>Gerado em {generated} · fonte: Open-Meteo</p>
 </header>
 <div class="grid">{''.join(cards)}</div>
 <footer>

@@ -1,9 +1,9 @@
 """Configuration: location and safety thresholds.
 
-Thresholds are an initial, conservative baseline for a small training vessel
-(navio escola), which is more sensitive to weather than a commercial ship.
-They are loosely informed by the ANTAQ critical-threshold report for Brazilian
-ports. Adjust them to the real specifications and operating limits of the vessel.
+Thresholds are an initial, conservative baseline for small-vessel navigation in
+São Marcos Bay, which is more sensitive to weather than large commercial
+shipping. They are loosely informed by the ANTAQ critical-threshold report for
+Brazilian ports. Adjust them to the operating limits of the vessel in use.
 """
 
 # --- Location: São Luís (MA), Baía de São Marcos ---------------------------
