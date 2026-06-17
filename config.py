@@ -18,6 +18,15 @@ MARINE_LON = -44.35
 TIMEZONE = "America/Fortaleza"  # São Luís local time (UTC-3, no DST)
 FORECAST_DAYS = 7
 
+# --- Day periods -----------------------------------------------------------
+# Each forecast day is split into three periods. "noite" wraps the late-night
+# and early-morning hours of the same calendar date.
+PERIODS = [
+    {"key": "manha", "label": "Manhã", "hours": list(range(6, 12))},   # 06–12
+    {"key": "tarde", "label": "Tarde", "hours": list(range(12, 18))},  # 12–18
+    {"key": "noite", "label": "Noite", "hours": list(range(18, 24)) + list(range(0, 6))},  # 18–06
+]
+
 # --- Safety thresholds ------------------------------------------------------
 # A day is flagged RED if any "red" limit is exceeded, AMBER if any "amber"
 # limit is reached, otherwise GREEN. Values are daily extremes.

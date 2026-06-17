@@ -7,7 +7,8 @@ Two endpoints are used:
   * Weather forecast  -> wind, gusts, precipitation, visibility
   * Marine forecast   -> significant wave height, wave period
 
-Hourly values are aggregated into daily extremes, which feed the risk engine.
+Hourly values are aggregated into per-period extremes (manhã / tarde / noite,
+defined in config.PERIODS), which feed the risk engine.
 """
 
 from __future__ import annotations
@@ -60,35 +61,43 @@ def fetch_marine() -> dict:
     )
 
 
-def _day(ts: str) -> str:
-    """Extract the YYYY-MM-DD date part from an ISO timestamp."""
-    return ts[:10]
+def _hour_to_period(hour: int) -> str | None:
+    """Map an hour (0–23) to a period key, or None if unused."""
+    for period in config.PERIODS:
+        if hour in period["hours"]:
+            return period["key"]
+    return None
 
 
-def daily_summary() -> list[dict]:
-    """Combine both forecasts into one record per day with daily extremes.
+def period_summary() -> list[dict]:
+    """Combine both forecasts into one record per (day, period).
 
-    Returns a list of dicts sorted by date, each containing the worst-case
-    value of the day for every monitored variable.
+    Returns a list of dicts sorted by date and period order, each holding the
+    worst-case value of that period for every monitored variable.
     """
     weather = fetch_weather()["hourly"]
     marine = fetch_marine()["hourly"]
 
-    # Group hourly values per calendar day.
-    per_day: dict[str, dict] = defaultdict(lambda: defaultdict(list))
+    # Group hourly values per (date, period).
+    buckets: dict[tuple, dict] = defaultdict(lambda: defaultdict(list))
+
+    def _add(ts: str, key: str, value):
+        date = ts[:10]
+        hour = int(ts[11:13])
+        period = _hour_to_period(hour)
+        if period is None:
+            return
+        buckets[(date, period)][key].append(value)
 
     for i, ts in enumerate(weather["time"]):
-        d = _day(ts)
-        per_day[d]["wind_speed"].append(weather["wind_speed_10m"][i])
-        per_day[d]["wind_gusts"].append(weather["wind_gusts_10m"][i])
-        per_day[d]["precip"].append(weather["precipitation"][i])
-        # Open-Meteo returns visibility in metres; convert to km.
+        _add(ts, "wind_speed", weather["wind_speed_10m"][i])
+        _add(ts, "wind_gusts", weather["wind_gusts_10m"][i])
+        _add(ts, "precip", weather["precipitation"][i])
         vis = weather["visibility"][i]
-        per_day[d]["visibility"].append(vis / 1000.0 if vis is not None else None)
+        _add(ts, "visibility", vis / 1000.0 if vis is not None else None)
 
     for i, ts in enumerate(marine["time"]):
-        d = _day(ts)
-        per_day[d]["wave"].append(marine["wave_height"][i])
+        _add(ts, "wave", marine["wave_height"][i])
 
     def _max(values):
         clean = [v for v in values if v is not None]
@@ -98,13 +107,18 @@ def daily_summary() -> list[dict]:
         clean = [v for v in values if v is not None]
         return min(clean) if clean else None
 
+    order = {p["key"]: i for i, p in enumerate(config.PERIODS)}
+    labels = {p["key"]: p["label"] for p in config.PERIODS}
+
     summary = []
-    for d in sorted(per_day):
-        rec = per_day[d]
+    for (date, period) in sorted(buckets, key=lambda k: (k[0], order[k[1]])):
+        rec = buckets[(date, period)]
         summary.append(
             {
-                "date": d,
-                "weekday": dt.date.fromisoformat(d).strftime("%a"),
+                "date": date,
+                "weekday": dt.date.fromisoformat(date).strftime("%a"),
+                "period": period,
+                "period_label": labels[period],
                 "wind_speed_kmh": _max(rec["wind_speed"]),
                 "wind_gusts_kmh": _max(rec["wind_gusts"]),
                 "wave_height_m": _max(rec["wave"]),
@@ -116,5 +130,5 @@ def daily_summary() -> list[dict]:
 
 
 if __name__ == "__main__":
-    for row in daily_summary():
+    for row in period_summary():
         print(row)

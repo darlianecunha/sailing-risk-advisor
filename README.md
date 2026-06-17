@@ -1,8 +1,9 @@
 # São Marcos Bay Sailing Advisor ⚓
 
-A daily go/no-go decision tool for navigation in São Marcos Bay (Baía de São
-Marcos), São Luís, Maranhão, Brazil. It pulls the marine and weather forecast
-for the next seven days, scores each day against configurable safety
+A go/no-go decision tool for navigation in São Marcos Bay (Baía de São Marcos),
+São Luís, Maranhão, Brazil. It pulls the marine and weather forecast for the
+next seven days, splits each day into **three periods — morning, afternoon and
+night (manhã / tarde / noite)** — scores each period against configurable safety
 thresholds, and produces a simple traffic-light recommendation:
 
 | Light | Meaning |
@@ -103,7 +104,7 @@ sao-marcos-sailing-advisor/
 ├── main.py              # command-line entry point
 ├── config.py            # location + safety thresholds
 ├── src/
-│   ├── fetch.py         # Open-Meteo data collection
+│   ├── fetch.py         # Open-Meteo data collection, aggregated per period
 │   ├── risk.py          # threshold rules → traffic light
 │   └── report.py        # console + HTML output
 ├── api/

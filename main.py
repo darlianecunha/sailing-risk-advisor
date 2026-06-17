@@ -15,8 +15,8 @@ from src import fetch, report, risk
 
 
 def run(export_json: bool = False) -> list[dict]:
-    days = fetch.daily_summary()
-    assessed = risk.assess(days)
+    periods = fetch.period_summary()
+    assessed = risk.assess(periods)
 
     print(report.to_console(assessed))
 

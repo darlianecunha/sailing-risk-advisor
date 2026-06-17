@@ -22,8 +22,8 @@ app = Flask(__name__)
 @app.route("/")
 def index():
     try:
-        days = risk.assess(fetch.daily_summary())
-        return report.build_html(days)
+        periods = risk.assess(fetch.period_summary())
+        return report.build_html(periods)
     except Exception as exc:  # keep the page from 500-ing on an API hiccup
         return (
             f"<h1>Indisponível no momento</h1><p>Não foi possível obter a "
