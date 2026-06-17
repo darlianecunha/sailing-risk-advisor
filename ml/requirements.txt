@@ -1,0 +1,6 @@
+# Dependencies for the optional ML module (ml/train_model.py).
+# Install only if you want to run the training pipeline:
+#   pip install -r ml/requirements.txt
+pandas>=2.0
+scikit-learn>=1.3
+joblib>=1.3

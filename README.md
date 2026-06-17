@@ -48,6 +48,19 @@ python main.py --json     # also print the assessment as JSON
 The HTML report (`output/navegabilidade.html`) is a self-contained dashboard you
 can open in any browser.
 
+## Live deployment (Vercel)
+
+The repository ships with a thin web layer so the dashboard can be hosted live:
+
+- `api/index.py` — a Flask app (the `app` object Vercel's Python runtime needs)
+  that fetches the forecast on each request and returns the HTML dashboard.
+- `vercel.json` — routes every request to that function.
+- `requirements.txt` — declares Flask, the only runtime dependency.
+
+Import the GitHub repository into Vercel and deploy; no build configuration is
+required. The command-line tool (`main.py`) is independent and is not used by
+the deployment.
+
 ## Configuration
 
 All thresholds and coordinates live in `config.py`. The defaults are a
@@ -86,15 +99,19 @@ from the vessel).
 
 ```
 sao-luis-sailing-advisor/
-├── main.py              # entry point
+├── main.py              # command-line entry point
 ├── config.py            # location + safety thresholds
 ├── src/
 │   ├── fetch.py         # Open-Meteo data collection
 │   ├── risk.py          # threshold rules → traffic light
 │   └── report.py        # console + HTML output
+├── api/
+│   └── index.py         # Flask app for the live (Vercel) dashboard
 ├── ml/
-│   └── train_model.py   # optional RandomForest practice pipeline
-├── requirements.txt
+│   ├── train_model.py   # optional RandomForest practice pipeline
+│   └── requirements.txt # ML-only dependencies
+├── vercel.json          # deployment routing
+├── requirements.txt     # web runtime dependency (Flask)
 ├── LICENSE              # MIT
 └── README.md
 ```

@@ -20,8 +20,8 @@ def to_console(days: list[dict]) -> str:
     return "\n".join(lines)
 
 
-def to_html(days: list[dict], path: str) -> None:
-    """Write a self-contained HTML report to ``path``."""
+def build_html(days: list[dict]) -> str:
+    """Return a self-contained HTML report as a string."""
     colours = {"GREEN": "#1a9850", "AMBER": "#f0a500", "RED": "#d73027"}
     cards = []
     for d in days:
@@ -86,5 +86,10 @@ def to_html(days: list[dict], path: str) -> None:
 </footer>
 </body>
 </html>"""
+    return html
+
+
+def to_html(days: list[dict], path: str) -> None:
+    """Write a self-contained HTML report to ``path``."""
     with open(path, "w", encoding="utf-8") as f:
-        f.write(html)
+        f.write(build_html(days))
