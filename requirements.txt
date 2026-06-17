@@ -1,0 +1,6 @@
+# Core advisor (main.py) uses only the Python standard library — no installs needed.
+
+# Optional ML module (ml/train_model.py):
+pandas>=2.0
+scikit-learn>=1.3
+joblib>=1.3
